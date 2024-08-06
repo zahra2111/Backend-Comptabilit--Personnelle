@@ -1,0 +1,3 @@
+<?php //route_name_ea3ebbab73db74cee6fa9092eba23501
+
+return [PHP_INT_MAX, 'api_banks_get_item'];
