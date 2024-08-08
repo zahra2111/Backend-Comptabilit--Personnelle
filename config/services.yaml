@@ -23,6 +23,11 @@ services:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Kernel.php'
-       
+    App\Controller\ChangePasswordController:
+        public: true
+        arguments:
+            $entityManager: '@doctrine.orm.entity_manager'
+            $passwordEncoder: '@security.password_encoder'   
+    
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

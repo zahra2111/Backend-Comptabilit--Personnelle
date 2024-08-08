@@ -14,7 +14,7 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 [
                     'get' => [
                         'method' => 'GET',
-                        'stateless' => null,
+                        'stateless' => true,
                         'input_formats' => [
                             'json' => [
                                 'application/json',
@@ -28,7 +28,7 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                     ],
                     'delete' => [
                         'method' => 'DELETE',
-                        'stateless' => null,
+                        'stateless' => true,
                         'input_formats' => [
                             'json' => [
                                 'application/json',
@@ -42,7 +42,7 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                     ],
                     'put' => [
                         'method' => 'PUT',
-                        'stateless' => null,
+                        'stateless' => true,
                         'input_formats' => [
                             'json' => [
                                 'application/json',
@@ -56,7 +56,7 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                     ],
                     'patch' => [
                         'method' => 'PATCH',
-                        'stateless' => null,
+                        'stateless' => true,
                         'input_formats' => [
                             'json' => [
                                 'application/merge-patch+json',
@@ -74,7 +74,7 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 [
                     'get' => [
                         'method' => 'GET',
-                        'stateless' => null,
+                        'stateless' => true,
                         'input_formats' => [
                             'json' => [
                                 'application/json',
@@ -88,7 +88,7 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                     ],
                     'post' => [
                         'method' => 'POST',
-                        'stateless' => null,
+                        'stateless' => true,
                         'input_formats' => [
                             'json' => [
                                 'application/json',
@@ -149,7 +149,7 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                     'security_post_denormalize_message' => null,
                     'security_post_validation' => null,
                     'security_post_validation_message' => null,
-                    'stateless' => null,
+                    'stateless' => true,
                     'sunset' => null,
                     'swagger_context' => null,
                     'validation_groups' => null,

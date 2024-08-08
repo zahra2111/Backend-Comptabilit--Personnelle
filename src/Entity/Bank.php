@@ -26,6 +26,10 @@ class Bank
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $type = null;
 
+    #[ORM\ManyToOne(inversedBy: 'bankAccounts')]
+    private ?User $usr = null;
+
+
     public function getId(): ?int
     {
         return $this->id;
@@ -66,4 +70,19 @@ class Bank
 
         return $this;
     }
+
+    public function getUsr(): ?User
+    {
+        return $this->usr;
+    }
+
+    public function setUsr(?User $usr): static
+    {
+        $this->usr = $usr;
+
+        return $this;
+    }
+
+
+
 }

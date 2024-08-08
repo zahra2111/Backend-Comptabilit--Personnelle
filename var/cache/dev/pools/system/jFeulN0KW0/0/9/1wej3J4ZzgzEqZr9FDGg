@@ -10,15 +10,15 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
             'properties' => [
                 [
                     'id',
-                    'NomPrenom',
                     'roles',
                     'password',
                     'email',
                     'plainPassword',
-                    'nomPrenom',
+                    'bankAccounts',
                     'userIdentifier',
                     'username',
                     'salt',
+                    'banks',
                 ],
             ],
         ],

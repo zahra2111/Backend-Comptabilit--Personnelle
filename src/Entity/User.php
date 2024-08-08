@@ -1,9 +1,13 @@
 <?php
 namespace App\Entity;
+// Import the Groups annotation
+use Symfony\Component\Serializer\Annotation\Groups;
 
 use App\Controller\CurrentUserController;
 use App\Controller\LogoutController;
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -42,23 +46,51 @@ use Symfony\Component\Validator\Constraints as Assert;
                 ]
             ]
         ],
-        
+        'change_password' => [
+            'method' => 'POST',
+            'path' => '/change_password',
+            'controller' => ChangePasswordController::class,
+            'openapi_context' => [
+                'summary' => 'Change user password',
+                'requestBody' => [
+                    'required' => true,
+                    'content' => [
+                        'application/json' => [
+                            'schema' => [
+                                'type' => 'object',
+                                'properties' => [
+                                    'email' => ['type' => 'string'],
+                                    'currentPassword' => ['type' => 'string'],
+                                    'newPassword' => ['type' => 'string']
+                                ],
+                                'required' => ['email', 'currentPassword', 'newPassword'],
+                            ],
+                        ],
+                    ],
+                ],
+                'responses' => [
+                    '200' => [
+                        'description' => 'Password changed successfully',
+                    ],
+                    '400' => [
+                        'description' => 'Invalid credentials or missing parameters',
+                    ]
+                ]
+            ]
+        ],
     ],
-    itemOperations: [
-        'get',
-        'put',
-        'delete'
-    ]
+    
 )]
+
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    /**
+     * @Groups({"user:read"})
+     */
     private ?int $id = null;
-
-    #[ORM\Column(length: 180, unique: true)]
-    private ?string $NomPrenom = null;
 
     #[ORM\Column]
     private array $roles = [];
@@ -67,18 +99,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $password = null;
 
     #[ORM\Column(length: 255)]
+    /**
+     * @Groups({"user:read"})
+     */
     private ?string $email = null;
 
     private ?string $plainPassword = null;
 
+    #[ORM\OneToMany(mappedBy: 'usr', targetEntity: Bank::class)]
+    /**
+     * @Groups({"user:read"})
+     */
+    private Collection $bankAccounts;
+
+
+
+    public function __construct()
+    {
+        $this->banks = new ArrayCollection();
+        $this->bankAccounts = new ArrayCollection();
+    }
+    
     public function getPlainPassword(): ?string
     {
         return $this->plainPassword;
     }
 
-    public function setPlainPassword(?string $plainPassword): void
+     public function setPlainPassword(?string $plainPassword): self
     {
         $this->plainPassword = $plainPassword;
+        return $this;
     }
 
     public function getId(): ?int
@@ -86,26 +136,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->id;
     }
 
-    public function getNomPrenom(): ?string
-    {
-        return $this->NomPrenom;
-    }
-
-    public function setNomPrenom(string $NomPrenom): static
-    {
-        $this->NomPrenom = $NomPrenom;
-
-        return $this;
-    }
 
     public function getUserIdentifier(): string
     {
-        return (string) $this->NomPrenom;
+        return (string) $this->email;
     }
 
     public function getUsername(): string
     {
-        return (string) $this->NomPrenom;
+        return (string) $this->email;
     }
 
     public function getRoles(): array
@@ -161,9 +200,70 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return [
             'id' => $this->getId(),
-            'NomPrenom' => $this->getNomPrenom(),
             'roles' => $this->getRoles(),
             'email' => $this->getEmail(),
         ];
     }
+
+    /**
+     * @return Collection<int, Bank>
+     */
+    public function getBanks(): Collection
+    {
+        return $this->banks;
+    }
+
+    public function addBank(Bank $bank): static
+    {
+        if (!$this->banks->contains($bank)) {
+            $this->banks->add($bank);
+            $bank->setUserId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBank(Bank $bank): static
+    {
+        if ($this->banks->removeElement($bank)) {
+            // set the owning side to null (unless already changed)
+            if ($bank->getUserId() === $this) {
+                $bank->setUserId(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Bank>
+     */
+    public function getBankAccounts(): Collection
+    {
+        return $this->bankAccounts;
+    }
+
+    public function addBankAccount(Bank $bankAccount): static
+    {
+        if (!$this->bankAccounts->contains($bankAccount)) {
+            $this->bankAccounts->add($bankAccount);
+            $bankAccount->setUsr($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBankAccount(Bank $bankAccount): static
+    {
+        if ($this->bankAccounts->removeElement($bankAccount)) {
+            // set the owning side to null (unless already changed)
+            if ($bankAccount->getUsr() === $this) {
+                $bankAccount->setUsr(null);
+            }
+        }
+
+        return $this;
+    }
+
+  
 }

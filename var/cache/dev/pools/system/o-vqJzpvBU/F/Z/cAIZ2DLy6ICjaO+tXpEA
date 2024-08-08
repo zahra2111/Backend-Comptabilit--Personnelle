@@ -14,21 +14,7 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 [
                     'get' => [
                         'method' => 'GET',
-                        'stateless' => null,
-                        'input_formats' => [
-                            'json' => [
-                                'application/json',
-                            ],
-                        ],
-                        'output_formats' => [
-                            'json' => [
-                                'application/json',
-                            ],
-                        ],
-                    ],
-                    'put' => [
-                        'method' => 'PUT',
-                        'stateless' => null,
+                        'stateless' => true,
                         'input_formats' => [
                             'json' => [
                                 'application/json',
@@ -42,10 +28,38 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                     ],
                     'delete' => [
                         'method' => 'DELETE',
-                        'stateless' => null,
+                        'stateless' => true,
                         'input_formats' => [
                             'json' => [
                                 'application/json',
+                            ],
+                        ],
+                        'output_formats' => [
+                            'json' => [
+                                'application/json',
+                            ],
+                        ],
+                    ],
+                    'put' => [
+                        'method' => 'PUT',
+                        'stateless' => true,
+                        'input_formats' => [
+                            'json' => [
+                                'application/json',
+                            ],
+                        ],
+                        'output_formats' => [
+                            'json' => [
+                                'application/json',
+                            ],
+                        ],
+                    ],
+                    'patch' => [
+                        'method' => 'PATCH',
+                        'stateless' => true,
+                        'input_formats' => [
+                            'json' => [
+                                'application/merge-patch+json',
                             ],
                         ],
                         'output_formats' => [
@@ -60,7 +74,7 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 [
                     'get' => [
                         'method' => 'GET',
-                        'stateless' => null,
+                        'stateless' => true,
                         'input_formats' => [
                             'json' => [
                                 'application/json',
@@ -74,7 +88,7 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                     ],
                     'post' => [
                         'method' => 'POST',
-                        'stateless' => null,
+                        'stateless' => true,
                         'input_formats' => [
                             'json' => [
                                 'application/json',
@@ -111,7 +125,62 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                         ],
                         'input' => null,
                         'output' => null,
-                        'stateless' => null,
+                        'stateless' => true,
+                        'input_formats' => [
+                            'json' => [
+                                'application/json',
+                            ],
+                        ],
+                        'output_formats' => [
+                            'json' => [
+                                'application/json',
+                            ],
+                        ],
+                    ],
+                    'change_password' => [
+                        'method' => 'POST',
+                        'path' => '/change_password',
+                        'controller' => 'App\\Entity\\ChangePasswordController',
+                        'openapi_context' => [
+                            'summary' => 'Change user password',
+                            'requestBody' => [
+                                'required' => true,
+                                'content' => [
+                                    'application/json' => [
+                                        'schema' => [
+                                            'type' => 'object',
+                                            'properties' => [
+                                                'email' => [
+                                                    'type' => 'string',
+                                                ],
+                                                'currentPassword' => [
+                                                    'type' => 'string',
+                                                ],
+                                                'newPassword' => [
+                                                    'type' => 'string',
+                                                ],
+                                            ],
+                                            'required' => [
+                                                'email',
+                                                'currentPassword',
+                                                'newPassword',
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                            'responses' => [
+                                200 => [
+                                    'description' => 'Password changed successfully',
+                                ],
+                                400 => [
+                                    'description' => 'Invalid credentials or missing parameters',
+                                ],
+                            ],
+                        ],
+                        'input' => null,
+                        'output' => null,
+                        'stateless' => true,
                         'input_formats' => [
                             'json' => [
                                 'application/json',
@@ -176,7 +245,7 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                     'security_post_denormalize_message' => null,
                     'security_post_validation' => null,
                     'security_post_validation_message' => null,
-                    'stateless' => null,
+                    'stateless' => true,
                     'sunset' => null,
                     'swagger_context' => null,
                     'validation_groups' => null,
